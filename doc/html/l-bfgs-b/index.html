@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>l-bfgs-b-0.1.0.1: Bindings to L-BFGS-B, Fortran code for limited-memory quasi-Newton bound-constrained optimization</title><link href="ocean.css" rel="stylesheet" type="text/css" title="Ocean" /><script src="haddock-util.js" type="text/javascript"></script><script type="text/javascript">//<![CDATA[
+window.onload = function () {pageLoad();};
+//]]>
+</script></head><body><div id="package-header"><ul class="links" id="page-menu"><li><a href="index.html">Contents</a></li><li><a href="doc-index.html">Index</a></li></ul><p class="caption">l-bfgs-b-0.1.0.1: Bindings to L-BFGS-B, Fortran code for limited-memory quasi-Newton bound-constrained optimization</p></div><div id="content"><div id="description"><h1>l-bfgs-b-0.1.0.1: Bindings to L-BFGS-B, Fortran code for limited-memory quasi-Newton bound-constrained optimization</h1><div class="doc"><p>Bindings to L-BFGS-B, Fortran code for limited-memory quasi-Newton bound-constrained optimization.
+</p><p>L-BFGS-B is a Fortran library for limited-memory quasi-Newton bound-constrained optimization written
+by Ciyou Zhu, Richard Byrd, Jorge Nocedal and Jose Luis Morales. More information can be found on its
+homepage <a href="http://users.eecs.northwestern.edu/~nocedal/lbfgsb.html">http://users.eecs.northwestern.edu/~nocedal/lbfgsb.html</a>, or in [1].
+</p><p>The L-BFGS-B Fortran code is not included in this package, as I consider it a dependency. This package expects to
+be able to link against version 3.0 of the L-BFGS-B code, as built by a relatively recent version of gfortran.
+Instructions on how to build L-BFGS-B as a shared library
+can be found at <a href="http://nonempty.org/software/haskell-l-bfgs-b">http://nonempty.org/software/haskell-l-bfgs-b</a>.
+</p><p>The functions provided in this package wrap FFI calls in <code>unsafePerformIO</code>, which among other things means that
+the called L-BFGS-B code should not output anything. The relevant <code>iprint</code> flag is thus set negative to suppress
+output as specified in the L-BFGS-B code. However, there are two places in said code where the flag is ignored
+and output still occurs. If it bothers you that code exposed as pure prints things, see
+<a href="http://nonempty.org/software/haskell-l-bfgs-b">http://nonempty.org/software/haskell-l-bfgs-b</a> for information on a simple patch for L-BFGS-B. The SciPy project
+has described the same behavior in <a href="https://github.com/scipy/scipy/issues/2261">https://github.com/scipy/scipy/issues/2261</a>.
+</p><p>The code assumes that your Haskell compiler's Doubles are IEEE-754 doubles.
+</p><p>Example on usage can be found in the included <code>examples</code> directiory.
+</p><p>The current version has only been lightly tested, and should not be trusted for serious work. Feedback is appreciated.
+</p><p>Changes in version 0.1.0.1:
+</p><ul><li> Check some function arguments for sanity and cause a runtime error otherwise.
+</li><li> Add note above on double representation.
+</li><li> Added TODO below.
+</li></ul><p>Changes in version 0.1:
+</p><ul><li> There has only been cursory testing, so do not trust these bindings yet.
+</li><li> Initial release.
+</li></ul><p>TODO:
+</p><ul><li> Be more generic with regards to vector types?
+</li></ul><p>[1] R. H. Byrd, P. Lu and J. Nocedal. A Limited Memory Algorithm for Bound Constrained Optimization, (1995), SIAM Journal on Scientific and Statistical Computing , 16, 5, pp. 1190-1208.
+</p></div></div><div id="module-list"><p class="caption">Modules</p><ul><li><span id="control.n.1" class="module collapser" onclick="toggleSection('n.1')">Numeric</span><ul id="section.n.1" class="show"><li><span class="module"><span id="control.n.1.1" class="collapser" onclick="toggleSection('n.1.1')">&nbsp;</span><a href="Numeric-LBFGSB.html">Numeric.LBFGSB</a></span><ul id="section.n.1.1" class="show"><li><span class="module"><a href="Numeric-LBFGSB-Convenience.html">Numeric.LBFGSB.Convenience</a></span></li><li><span class="module"><a href="Numeric-LBFGSB-Result.html">Numeric.LBFGSB.Result</a></span></li></ul></li></ul></li></ul></div></div><div id="footer"><p>Produced by <a href="http://www.haskell.org/haddock/">Haddock</a> version 2.13.2</p></div></body></html>

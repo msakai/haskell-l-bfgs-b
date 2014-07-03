@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 plus MathML 2.0 plus SVG 1.1//EN"
+               "http://www.w3.org/2002/04/xhtml-math-svg/xhtml-math-svg.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+  <head>  
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <title>haskell-l-bfgs-b: Haskell bindings to L-BFGS-B</title>
+  </head>
+  <body>
+    <h1>Haskell bindings to L-BFGS-B</h1>
+    <p>
+      More information can be found
+      at <a href="http://hackage.haskell.org/package/l-bfgs-b">Hackage</a>. Since
+      the package probably fails to build there, due to the L-BFGS-B
+      library missing, the Haddock documentation might not exist. The
+      missing Haddock documentation can
+      be <a href="doc/html/l-bfgs-b">viewed here</a> instead.
+    </p>
+    <p>Version 0.1.0.1 can also be <a href="haskell-l-bfgs-b-0.1.0.1.tar.gz">downloaded from here</a>.</p>
+
+    <h2>Building L-BFGS-B as a shared library</h2>
+    <p>
+      The bindings expect to find L-BFGS-B 3.0 as a shared library
+      <span class="file">liblbfgsb.so.0</span> built by a relatively
+      recent version
+      of <a href="http://gcc.gnu.org/fortran/">GFortran</a>. L-BFGS-B
+      can be downloaded
+      from <a href="http://users.eecs.northwestern.edu/~nocedal/lbfgsb.html">its
+      author's webpage</a>, but the included makefile does not build
+      shared libraries.
+    </p>
+    <p>
+      To do so, unpack the tarball and build with:
+    </p>
+      <div class="codebox"><code>
+gfortran -O2 -shared -Wl,-soname,liblbfgsb.so.0 -o liblbfgsb.so.0 -fPIC lbfgsb.f linpack.f timer.f -lblas
+      </code></div>
+    <p>
+      If you prefer to use the included (subset of) BLAS instead of
+      linking to libblas, omit <span class="file">-lblas</span> and
+      add <span class="file">blas.f</span>.
+    </p>
+    <p>
+      Place <span class="file">liblbfgsb.so.0</span> anywhere in GHC's
+      linker search path, or use the <span class="file">-L</span>
+      flag.
+    </p>
+    <p>
+      Alternatively, Debian/Ubuntu packages with the shared library
+      can be found
+      in <a href="https://launchpad.net/~gspreemann/+archive/ppa">this
+      PPA</a>. The Haskell bindings are
+      packaged <a href="https://launchpad.net/~gspreemann/+archive/haskell">here</a>.
+    </p>
+
+    <h2>Patching L-BFGS-B</h2>
+    <p>
+      The L-BFGS-B library is supposed to be quiet when
+      the <span class="file">iprint</span> argument is negative. There
+      are, however, two places in the code where this is
+      ignored. Since the Haskell bindings wrap FFI calls to L-BFGS-B
+      in <span class="file">unsafePerformIO</span>, we really don't
+      want L-BFSG-B to print anything. <em><a href="silence.diff">This patch</a> silences
+      L-BFGS-B.</em>
+    </p>
+    <p>
+      The L-BFGS-B library uses an internal copy of LINPACK for some
+      linear algebra computations. LAPACK supersedes LINPACK,
+      and <em><a href="replace-linpack-with-lapack.diff">this
+      patch</a> makes L-BFGS-B use it instead.</em> If this patch is
+      used, <span class="file">liblbfgsb0.so.0</span> must be
+      dynamically linked against LAPACK. To this end,
+      remove <span class="file">linpack.f</span> from the above
+      compilation command, and add
+      instead <span class="file">-llapack</span>.
+    </p>
+    <p>
+      The Debian/Ubuntu package
+      in <a href="https://launchpad.net/~gspreemann/+archive/ppa">this
+      PPA</a> has both patches.
+    </p>
+  </body>
+</html>
